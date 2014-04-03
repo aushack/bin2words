@@ -49,11 +49,17 @@ Example:       #{$0} -e FILE > OUTPUT
     when '--encode'
       begin
         open(arg,"rb"){|f|
+        len = 0
         while buf = f.read(1024)
           buf.each_byte { |bin|
             print inifile["bin2words"][bin.to_s] + " " # Spaces after all words is a must.
+            if (len += inifile["bin2words"][bin.to_s].length) > 60 # wrap at ~60 characters
+              len = 0
+              print "\n"
+            end
 		      }
         end
+        print "\n"
         }
       rescue => err
         puts "Exception: #{err}"
