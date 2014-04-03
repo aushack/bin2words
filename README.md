@@ -77,11 +77,9 @@ virus illuminati USA USA AU 767 PROMIS AU NATO USA MITM 767 president NATO AU US
 
 PERFORMANCE
 
-bin2words was not written to be fast (maybe it should be?).
-
-Using the default key, it took 3 minutes to encode a 100MB AVI file resulting in a 400MB text document (1 byte = 4 bytes).
+Using the default key, it took 80 seconds to encode a 100MB AVI file resulting in a 400MB text document (1 byte = 4 bytes).
 By compressing the text document with bz2, the ZIP archive of the 400MB text document was a reasonable 104MB.
-Using the default key, it took over 1.5 hours to decode the 400MB text document back into the 100MB AVI file, as matching strings is not a quick process. 
+Using the default key, it took over 75 seconds to decode the 400MB text document back into the 100MB AVI file. 
 
 REQUIREMENTS
 
