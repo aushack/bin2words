@@ -20,16 +20,23 @@ wraplen = 60 # Max line length
 
 # Options
 opts = GetoptLong.new(
-  [ '--help',	  '-h',   GetoptLong::NO_ARGUMENT ],
+  [ '--help',	  '-h',   GetoptLong::NO_ARGUMENT       ],
+  [ '--gen',	  '-g',   GetoptLong::NO_ARGUMENT       ],
+  [ '--key',	  '-k',   GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--nowrap',	'-n',   GetoptLong::NO_ARGUMENT       ],
   [ '--encode', '-e',   GetoptLong::REQUIRED_ARGUMENT ],
   [ '--decode',	'-d',   GetoptLong::REQUIRED_ARGUMENT ],
-  [ '--key',	  '-k',   GetoptLong::OPTIONAL_ARGUMENT ],
-  [ '--nowrap',	'-n',   GetoptLong::NO_ARGUMENT ]
 )
 
 begin
 opts.each do |opt, arg|
   case opt
+    when '--gen' # Make a blank ini file template. Perhaps generate, take a word list, or http URL for word input?
+      print "[bin2words]\n"
+      0.upto(255) do |i|
+        print "#{i}=\n"
+      end
+      exit 0
     when '--nowrap'
       wrap = false
     when '--key'
@@ -43,6 +50,7 @@ opts.each do |opt, arg|
 Example:       #{$0} -e FILE > OUTPUT
 
  -h, --help:   Self explanatory.
+ -g, --gen:    Generate an empty ini file for population.
  -k, --key:    Encode/decode key file. Otherwise default used (bin2words.ini)
  -n, --nowrap: Disable line length limit (wrap). Default is #{wraplen} characters.
  -e, --encode: Convert any file from binary (or text) to words.
