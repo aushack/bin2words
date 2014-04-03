@@ -24,12 +24,12 @@ SYNTAX
 USAGE
 -----
 
-`
+````
 ./bin2words.rb -e image.gif > image.txt
 ./bin2words.rb -d image.txt > image-new.gif
 ./bin2words.rb -k infosec.ini -e image.gif > image.txt
 ./bin2words.rb -k infosec.ini -d image.txt > image-new.gif
-`
+````
 
 KEY FILE
 --------
@@ -40,7 +40,8 @@ bin2words ships with two default key files:
 * The second is infosec.ini, which is a series of 256 words, all of varying length, and generally related to potential "keywords" that governments of the world may be intercepting.
 
 You can create your own key file, by ensuring the format is as follows:
-`
+
+````
 [bin2words]
 0=the
 1=yes
@@ -55,7 +56,8 @@ You can create your own key file, by ensuring the format is as follows:
 253=may
 254=gem
 255=and
-`
+````
+
 If you do not tag the ini file with [bin2words], or do not include words values for all 0-255 values, bin2words will not work and should return an error.
 Furthermore, if you specify the same word multiple times accidentally, the decoded file will become corrupted. You may wish to use a bindiff tool to confirm that the source file, which is encoded, then decoded, is an exact match of the original source file.
 
