@@ -15,18 +15,23 @@ end
 
 # Set values first.
 inifile = IniFile.load('bin2words.ini') # Default key file.
+wrap = true # Default is to limit line length
+wraplen = 60 # Max line length
 
 # Options
 opts = GetoptLong.new(
-  [ '--help',	'-h', GetoptLong::NO_ARGUMENT ],
-  [ '--encode', '-e', GetoptLong::REQUIRED_ARGUMENT ],
-  [ '--decode',	'-d', GetoptLong::REQUIRED_ARGUMENT ],
-  [ '--key',	'-k', GetoptLong::OPTIONAL_ARGUMENT ]
+  [ '--help',	  '-h',   GetoptLong::NO_ARGUMENT ],
+  [ '--encode', '-e',   GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--decode',	'-d',   GetoptLong::REQUIRED_ARGUMENT ],
+  [ '--key',	  '-k',   GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--nowrap',	'-n',   GetoptLong::NO_ARGUMENT ]
 )
 
 begin
 opts.each do |opt, arg|
   case opt
+    when '--nowrap'
+      wrap = false
     when '--key'
       if not File.exist?(arg)
         puts "ERROR: specified key file #{arg} does not exist!\nHint: try \"-k bin2words.ini\" for the default key file."
@@ -38,11 +43,12 @@ opts.each do |opt, arg|
 Example:       #{$0} -e FILE > OUTPUT
 
  -h, --help:   Self explanatory.
+ -k, --key:    Encode/decode key file. Otherwise default used (bin2words.ini)
+ -n, --nowrap: Disable line length limit (wrap). Default is #{wraplen} characters.
  -e, --encode: Convert any file from binary (or text) to words.
  -d, --decode: Convert a bin2words encoded file back to binary file.
- -k, --key:    Encode/decode key file. Otherwise default used (bin2words.ini)
  FILE:         Source file to encode or decode.
- OUTPUT:       Script output is sent to STDOUT. Use > to write to disk.
+ OUTPUT:       Script output is sent to STDOUT. Use > to write to file.
 
       EOF
 
@@ -53,9 +59,11 @@ Example:       #{$0} -e FILE > OUTPUT
         while buf = f.read(1024)
           buf.each_byte { |bin|
             print inifile["bin2words"][bin.to_s] + " " # Spaces after all words is a must.
-            if (len += inifile["bin2words"][bin.to_s].length) > 60 # wrap at ~60 characters
-              len = 0
-              print "\n"
+            if (wrap)
+              if (len += inifile["bin2words"][bin.to_s].length) > wraplen # wrap at ~60 characters
+                len = 0
+                print "\n"
+              end
             end
 		      }
         end
