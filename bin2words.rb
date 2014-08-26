@@ -64,13 +64,17 @@ Example:       #{$0} -e FILE > OUTPUT
       begin
         open(arg,"rb"){|f|
         len = 0
-        while buf = f.read(1024)
+        while buf = f.read(4096)
           buf.each_byte { |bin|
-            print inifile["bin2words"][bin.to_s] + " " # Spaces after all words is a must.
-            if (wrap)
-              if (len += inifile["bin2words"][bin.to_s].length) > wraplen # wrap at ~60 characters
-                len = 0
-                print "\n"
+            if ((inifile["bin2words"][bin.to_s]).nil?)
+              print "" # If not defined within the ini file, print null
+            else
+              print inifile["bin2words"][bin.to_s] + " " # Spaces after all words is a must.
+              if (wrap)
+                if (len += inifile["bin2words"][bin.to_s].length) > wraplen # wrap at ~60 characters
+                  len = 0
+                  print "\n"
+                end
               end
             end
 		      }
